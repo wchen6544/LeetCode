@@ -1024,7 +1024,26 @@ class Solution:
 
 
 
+    # Longest Repeating Character Replacement
+    def characterReplacement(self, s: str, k: int) -> int:
 
+        biggest = 1
+        l = 1
+        r = 1
+
+        for letter in range(1, len(s)):
+
+            if r - l <= k or s[letter] == s[letter - 1]:
+
+                biggest = (r - l) + 1
+
+                r += 1
+
+            else:
+
+                l += 1
+
+        print(biggest)
         
 sol = Solution()
 start = time.time()
@@ -1051,6 +1070,7 @@ start = time.time()
 #print(sol.numDecodings("06"))
 #print(sol.uniquePaths(3,7))
 #print(sol.canJump([3,1,1,2,0,4]))
+print(sol.characterReplacement("AABABBA", 1))
 
 print("--- %s seconds ---" % (time.time() - start))
 
