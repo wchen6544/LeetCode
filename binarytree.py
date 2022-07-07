@@ -378,7 +378,7 @@ class Solution:
 
 
         if root.left and root.right or not root.left and not root.right: 
-            
+
             loop(root.left, root.right)
             return self.sym
         
@@ -411,34 +411,229 @@ class Solution:
     '''
 
 
+    def maxDepth(self, root: Optional[TreeNode]) -> int:
+        
+        self.height = 0
+            
+        def loop(root):
+            
+            if not root:
+                
+                return 0
+            
+            else:
+                
+                l = loop(root.left)
+                r = loop(root.right)
+
+                self.height = 1 + max(l, r)
+
+                return 1 + max(l, r)
+        
+            
+        
+        
+        loop(root)
+        return self.height
+
+
+    '''
+    
+    - if root doesn't exist, return 0
+    - loop through the left and right side of tree and set height to 1 + max(l, r)
+    - return 1 + max(l, r)
+    - Make sure you have a if else seperating the looping part and if root doesn't exist
+
+    '''
+            
+            
+
+    def minDepth(self, root: Optional[TreeNode]) -> int:
+
+
+        if not root: return 0
+
+        self.res = float('inf')
+
+        def loop(root, num):
+
+            if not root:
+                return
+
+            if not root.left and not root.right:
+
+
+                self.res = min(self.res, num)
 
 
 
 
+            loop(root.left, num + 1)
+            loop(root.right, num + 1)
 
-a = TreeNode(4)
-a.left = TreeNode(2)
-a.left.left = TreeNode(1)
-a.left.right = TreeNode(3)
-a.right = TreeNode(7)
-a.right.left = TreeNode(6)
-a.right.right = TreeNode(9)
+        loop(root, 1)
+        return self.res
 
 
-p = TreeNode(1)
-p.left = TreeNode(2)
-p.left.left = TreeNode(3)
-p.left.right = TreeNode(4)
-p.right = TreeNode(2)
-p.right.right = TreeNode(3)
-p.right.left = TreeNode(4)
+    '''
+
+    - if not initial root, return 0
+    - needs 2 var in loop, one for the root and one to keep track of how many nodes were looped through
+    - set result to infinity
+    - if found leaf (no right or left root), set result to the min of itself and num
+    - when looping through, loop with the root.left/root.right and num + 1
+
+    '''
+
+
+
+    def hasPathSum(self, root: Optional[TreeNode], targetSum: int) -> bool:
+        
+        self.res = False
+        
+        def loop(root, total):
+            
+            if not root:
+                return
+            
+            total += root.val
+            
+            if total == targetSum and not root.right and not root.left:
+                
+                self.res = True
+                return
+            
+            
+            loop(root.left, total)
+            loop(root.right, total)
+        
+        loop(root, 0)
+        return self.res
+
+
+
+    '''
+    
+    - tranverse through the tree and when you loop have the root and a total var
+    - check if total is equal to the target and if its a leaf (no root right and no root left)
+
+    '''
+
+
+
+    def sumOfLeftLeaves(self, root: Optional[TreeNode]) -> int:
+        
+        self.res = 0
+        
+        def loop(root, direction):
+            
+            if not root:
+                return
+            
+            if not root.left and not root.right and direction:
+                
+                self.res += root.val
+            
+            
+            loop(root.left, True)
+            loop(root.right, False)
+        
+        loop(root, False)
+        return self.res
+
+
+    '''
+    
+    - tranverse through the tree and when you loop have the root and a direction var
+    - set direction to True if left, False if right
+    - only add if its a leaf (no root right and no root left) and direction is True
+
+    '''
+
+
+    def getMinimumDifference(self, root: Optional[TreeNode]) -> int:
+        
+        self.l = []
+        self.res = float('inf')
+        
+        def loop(root):
+            
+            if not root:
+                return
+            
+            loop(root.left)
+            
+            self.l.append(root.val)
+            
+            loop(root.right)
+        
+        loop(root)
+        
+        for i in range(len(self.l) - 1):
+            
+            if self.l[i + 1] - self.l[i] < self.res:
+                
+                self.res = self.l[i + 1] - self.l[i]
+        
+        return self.res
+
+
+    '''
+    
+    - tranverse through the tree (inorder) and append all values to a list
+    - this list will be scrictly ascending order
+    - after all the tranversing, go through the list and subtract the pairs 
+    (index1 - index0, index2 - index1, etc) and find the min
+
+    '''
+
+
+    def searchBST(self, root: Optional[TreeNode], val: int) -> Optional[TreeNode]:
+        
+        self.res = None
+        
+        def loop(root):
+            
+            if not root:
+                return
+            
+            if root.val == val:
+                
+                self.res = root
+                return
+            
+            if root.val > val:
+                loop(root.left)
+            else:
+                loop(root.right)
+        
+        loop(root)
+        return self.res
+
+
+    '''
+    
+    - tranverse through the tree and check if root value is equal to (val)
+    - if its too big, loop left
+    - if its too small, loop right
+
+    '''
+
 
 q = TreeNode(2)
-q.left = TreeNode(3)
+q.right = TreeNode(3)
+q.right.right = TreeNode(4)
+q.right.right.right = TreeNode(5)
+q.right.right.right.right = TreeNode(6)
+
+w = TreeNode(3)
+w.left = TreeNode(9)
+w.right = TreeNode(20)
+
+w.right.left = TreeNode(15)
+w.right.right = TreeNode(7)
+w.right.right.right = TreeNode(8)
+w.right.left.right = TreeNode(16)
 
 
-s = Solution()
-#print(print2D(s.increasingBST(a)))
-#print(print2D(s.invertTree(a)))
-print(s.isSymmetric(q))
 
