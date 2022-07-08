@@ -620,20 +620,191 @@ class Solution:
     '''
 
 
-q = TreeNode(2)
-q.right = TreeNode(3)
-q.right.right = TreeNode(4)
-q.right.right.right = TreeNode(5)
-q.right.right.right.right = TreeNode(6)
+    def sortedArrayToBST(self, nums: List[int]) -> Optional[TreeNode]:
+        
+        def loop(s, e):
+            
+            if s > e: return
+            
+            m = (s + e) // 2
+            
+            node = TreeNode(nums[m])
+            node.left = loop(s, m - 1)
+            node.right = loop(m + 1, e)
+            
+            return node
+        
+        return loop(0, len(nums) - 1)
+            
 
-w = TreeNode(3)
-w.left = TreeNode(9)
-w.right = TreeNode(20)
+    '''
 
-w.right.left = TreeNode(15)
-w.right.right = TreeNode(7)
-w.right.right.right = TreeNode(8)
-w.right.left.right = TreeNode(16)
+    - loop through the tree with a start and end var (index)
+    - set the node to equal the middle of the start and end and
+    set the node.left to re-loop and set the start and end to the
+    start, and middle minus one. For node.right, do the same but change
+    the start to middle plus one and end to end.
+    - return node after all of the looping.
+
+    '''
+
+    def binaryTreePaths(self, root: Optional[TreeNode]) -> List[str]:
+        
+        self.res = []
+        
+        def loop(root, arr):
+            
+            if not root: return
+            
+            arr.append(str(root.val))
+            
+            if not root.left and not root.right:
+                
+                self.res.append("->".join(arr))
+                return
+            
+            loop(root.left, arr.copy())
+
+            loop(root.right, arr.copy())
+        
+        loop(root, [])
+        return self.res
+
+
+    '''
+    
+    - tranverse through the tree and append to an array the root val if exist
+    - if the node is a leaf, append the completed list to the result
+
+
+    '''
+
+
+    def mergeTrees(self, root1: Optional[TreeNode], root2: Optional[TreeNode]) -> Optional[TreeNode]:
+        
+        def loop(r1, r2):
+            
+            if not r1:
+                return r2
+            if not r2:
+                return r1
+            
+            r1.val += r2.val
+            r1.left = loop(r1.left, r2.left)
+            r1.right = loop(r1.right, r2.right)
+            
+            return r1
+        
+        return loop(root1, root2)
+
+
+    '''
+    
+    - if first tree node doesn't exist, return second tree node
+    - if second tree node doesn't exist, return first tree node
+    - if both exist, add root2 node to root1 node
+    - root1 left is equal to loop left
+    - root1 right is equal to loop right
+
+    '''
+
+
+    def sumNumbers(self, root: Optional[TreeNode]) -> int:
+        
+        self.res = 0
+        
+        def loop(root, arr):
+            
+            if not root:
+                return
+            
+            arr.append(str(root.val))
+            
+            if not root.left and not root.right:
+                
+                self.res += int("".join(arr))
+                
+                
+                
+            loop(root.left, arr.copy())
+            loop(root.right, arr.copy())
+        
+        loop(root, [])
+        return self.res
+
+
+    '''
+
+    - loop through the tree and everytime you loop, make a copy of the arr
+    - append the string version of the number then if leaf, join and turn to int
+
+    '''
 
 
 
+    def levelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
+        
+        self.res = []
+        
+        def loop(root, lvl):
+            
+            if not root:
+                return
+            
+            
+            if len(self.res) - 1 < lvl:
+                self.res.append([root.val])
+            else:
+                self.res[lvl].append(root.val)                
+            
+            
+            loop(root.left, lvl + 1)
+            loop(root.right, lvl + 1)
+            
+        
+        loop(root, 0)
+        return self.res
+            
+
+
+    '''
+    
+    - preorder tranversal (root, left, right)
+    - loop with the root and the lvl
+    - everytime you loop, lvl + 1 which tells you the height of which
+    the node is at
+
+    '''
+
+
+    def pathSum(self, root: Optional[TreeNode], targetSum: int) -> List[List[int]]:
+        
+        self.res = []
+        
+        def loop(root, arr):
+            
+            if not root:
+                return
+            
+            arr.append(root.val)
+            
+            if not root.left and not root.right:
+                
+                if sum(arr) == targetSum:
+                    
+                    self.res.append(arr)
+                
+            loop(root.left, arr.copy())
+            loop(root.right, arr.copy())
+            
+        loop(root, [])
+        return self.res
+
+    '''
+
+    - loop throught the tree using preorder
+    - use arr.copy() to make paths to each leaf
+    - if sum of the arr is equal to targetSum add it to res
+
+
+    '''
