@@ -37,7 +37,7 @@ class TreeNode:
 
 class Solution:
 
-
+    # Binary Tree Inorder Traversal
     def inorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
             
         self.res = []    
@@ -63,7 +63,7 @@ class Solution:
 
     '''
 
-
+    # Binary Tree Preorder Traversal
     def preorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
         
         self.res = []
@@ -87,7 +87,7 @@ class Solution:
 
     '''
 
-
+    # Binary Tree Postorder Traversal
     def postorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
         
         self.res = []
@@ -113,7 +113,7 @@ class Solution:
 
     '''
 
-
+    # Invert Binary Tree
     def invertTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
         
         if not root: return
@@ -137,7 +137,7 @@ class Solution:
 
         '''
 
-
+    # Increasing Order Search Tree
     def increasingBST(self, root: TreeNode) -> TreeNode:
         
         self.newT = TreeNode()
@@ -169,7 +169,8 @@ class Solution:
         - lasly traverse right
 
         '''
-
+    
+    # Find Mode in Binary Search Tree
     def findMode(self, root: Optional[TreeNode]) -> List[int]:
         
         self.res = []
@@ -224,6 +225,7 @@ class Solution:
 
         '''
 
+    # Range Sum of BST
     def rangeSumBST(self, root: Optional[TreeNode], low: int, high: int) -> int:
         
         self.res = 0
@@ -247,6 +249,8 @@ class Solution:
 
         '''
 
+
+    # Find a Corresponding Node of a Binary Tree in a Clone of That Tree
     def getTargetCopy(self, original: TreeNode, cloned: TreeNode, target: TreeNode) -> TreeNode:
         
         self.res = None
@@ -270,6 +274,8 @@ class Solution:
 
         '''
 
+
+    # Root Equals Sum of Children
     def checkTree(self, root: Optional[TreeNode]) -> bool:
         
         return root.left.val + root.right.val == root.val
@@ -280,7 +286,7 @@ class Solution:
 
         '''
 
-
+    # Balanced Binary Tree
     def isBalanced(self, root: Optional[TreeNode]) -> bool:
         
         self.bal = True
@@ -324,7 +330,7 @@ class Solution:
         '''
 
 
-
+    # Same Tree
     def isSameTree(self, p: Optional[TreeNode], q: Optional[TreeNode]) -> bool:
 
         self.same = True
@@ -355,7 +361,7 @@ class Solution:
 
         '''
 
-
+    # Symmetric Tree
     def isSymmetric(self, root: Optional[TreeNode]) -> bool:
 
         self.sym = True
@@ -411,6 +417,7 @@ class Solution:
     '''
 
 
+    # Maximum Depth of Binary Tree
     def maxDepth(self, root: Optional[TreeNode]) -> int:
         
         self.height = 0
@@ -447,7 +454,7 @@ class Solution:
     '''
             
             
-
+    # Minimum Depth of Binary Tree
     def minDepth(self, root: Optional[TreeNode]) -> int:
 
 
@@ -486,7 +493,7 @@ class Solution:
     '''
 
 
-
+    # Path Sum
     def hasPathSum(self, root: Optional[TreeNode], targetSum: int) -> bool:
         
         self.res = False
@@ -520,7 +527,7 @@ class Solution:
     '''
 
 
-
+    # Sum of Left Leaves
     def sumOfLeftLeaves(self, root: Optional[TreeNode]) -> int:
         
         self.res = 0
@@ -551,6 +558,7 @@ class Solution:
     '''
 
 
+    # Minimum Absolute Difference in BST
     def getMinimumDifference(self, root: Optional[TreeNode]) -> int:
         
         self.l = []
@@ -588,6 +596,7 @@ class Solution:
     '''
 
 
+    # Search in a Binary Search Tree
     def searchBST(self, root: Optional[TreeNode], val: int) -> Optional[TreeNode]:
         
         self.res = None
@@ -620,6 +629,7 @@ class Solution:
     '''
 
 
+    # Convert Sorted Array to Binary Search Tree
     def sortedArrayToBST(self, nums: List[int]) -> Optional[TreeNode]:
         
         def loop(s, e):
@@ -648,6 +658,8 @@ class Solution:
 
     '''
 
+
+    # Binary Tree Paths
     def binaryTreePaths(self, root: Optional[TreeNode]) -> List[str]:
         
         self.res = []
@@ -680,6 +692,7 @@ class Solution:
     '''
 
 
+    # Merge Two Binary Trees
     def mergeTrees(self, root1: Optional[TreeNode], root2: Optional[TreeNode]) -> Optional[TreeNode]:
         
         def loop(r1, r2):
@@ -708,7 +721,7 @@ class Solution:
 
     '''
 
-
+    # Sum Root to Leaf Numbers
     def sumNumbers(self, root: Optional[TreeNode]) -> int:
         
         self.res = 0
@@ -741,7 +754,7 @@ class Solution:
     '''
 
 
-
+    # Binary Tree Level Order Traversal
     def levelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
         
         self.res = []
@@ -777,6 +790,7 @@ class Solution:
     '''
 
 
+    # Path Sum II
     def pathSum(self, root: Optional[TreeNode], targetSum: int) -> List[List[int]]:
         
         self.res = []
@@ -807,4 +821,612 @@ class Solution:
     - if sum of the arr is equal to targetSum add it to res
 
 
+    '''
+
+    # Construct Binary Tree from Inorder and Postorder Traversal
+    def buildTreePost(self, inorder: List[int], postorder: List[int]) -> Optional[TreeNode]:
+        
+        def loop(inorder, postorder):
+            
+            
+            if len(inorder) == 0 or len(postorder) == 0:
+                return
+
+            if len(inorder) == 1:
+                postorder.pop(-1)
+                return TreeNode(inorder[0])
+
+
+            root = TreeNode(postorder[-1])
+            popped = postorder.pop(-1)
+
+            rStuff = inorder[inorder.index(popped) + 1::]
+
+            root.right = loop(rStuff, postorder)
+
+            lStuff = inorder[0:inorder.index(popped)]
+            root.left = loop(lStuff, postorder)
+
+            return root
+        
+        return loop(inorder, postorder)
+    
+    '''
+    
+    - postorder[-1] = root
+    - first tranverse right of the root
+    - if length of inorder equals 1, pop the last index of postorder 
+        and return the TreeNode of inorder[0]
+    
+    - when tranversing right, take everything after the postorder[-1] node    
+    - when tranversing left, take everything before the postorder[-1] node
+    
+    '''
+
+
+
+    # Construct Binary Tree from Preorder and Inorder Traversal
+    def buildTreePre(self, preorder: List[int], inorder: List[int]) -> Optional[TreeNode]:
+        
+        def loop(preorder, inorder):
+            
+            
+            if len(preorder) == 0 or len(inorder) == 0:
+                return
+            
+            if len(inorder) == 1:
+                preorder.pop(0)
+                return TreeNode(inorder[0])
+            
+            
+            root = TreeNode(preorder[0])
+
+            preorder.pop(0)
+            root.left = (loop(preorder, inorder[0:inorder.index(root.val)]))
+            root.right = (loop(preorder, inorder[inorder.index(root.val) + 1: len(inorder)]))
+        
+            return root
+        
+        return loop(preorder, inorder)
+
+
+    '''
+
+    - preorder[0] = root
+    - tranverse left, take inorder from index of 0 to the preorder[0] root
+    - tranverse right, take inorder from the preorder[0] root to the end
+    - if length of inorder equals 1, pop preorder of 0 and return the TreeNode of inorder[0]
+
+    '''
+
+    # Subtree of Another Tree
+    def isSubtree(self, root: Optional[TreeNode], subRoot: Optional[TreeNode]) -> bool:
+        
+        self.res = False
+        
+        def loop(root):
+            
+            if not root:
+                return
+            
+            loop(root.left)
+            loop(root.right)
+            
+            
+            if compare(root, subRoot):
+                self.res = True
+        
+        def compare(root, subRoot):
+            
+            if not root and not subRoot:
+                return True
+            
+            if not root or not subRoot or (root.val != subRoot.val):
+                return False
+            
+            return compare(root.left, subRoot.left) and compare(root.right, subRoot.right)
+                
+            
+                
+        loop(root)
+        return self.res
+    
+    
+    '''
+    - to split the tree into subtrees, loop left and loop right, then the root 
+    will be a subtree
+    - check each subtree
+        - if both root and subRoot doesn't exist, True
+        - if one exist and the other doesn't or their values are not equal, False
+        - return compare(left) and compare(right)
+        
+    '''
+
+
+    # Most Frequent Subtree Sum
+    def findFrequentTreeSum(self, root: Optional[TreeNode]) -> List[int]:
+        
+        self.m = {}
+        self.biggest = 1
+        self.res = []
+        
+        def loop(root):
+            if not root:
+                return 0
+            
+            l = loop(root.left)
+            r = loop(root.right)
+            
+            self.m[l + r + root.val] = self.m.get(l + r + root.val, 0) + 1
+            
+            return root.val + l + r
+            
+        
+        loop(root)
+        
+        for i in self.m:
+            
+            numberOfOccur = self.m[i]
+            
+            if numberOfOccur == self.biggest:
+                self.res.append(i)
+            if numberOfOccur > self.biggest:
+                self.res = [i]
+                self.biggest = numberOfOccur
+        
+        return self.res
+
+
+    '''
+    
+    - use a hashmap and add the # of occurrences of sum of subtree
+    - to get the sum of subtrees
+        - set a l = loop(left)
+        - set a r = loop(right)
+        - the sum is equal to root.val + l + r
+        return root.val + l + r to set the l and r values
+
+    '''
+
+
+    # Kth Smallest Element in a BST
+    def kthSmallest(self, root: Optional[TreeNode], k: int) -> int:
+        
+        self.smallest = 0
+        self.k = k
+        
+        def loop(root):
+            
+            if not root:
+                return
+            
+            loop(root.left)
+            
+            self.k -= 1
+            
+            if self.k == 0:
+                self.smallest = root.val
+            
+            loop(root.right)
+        
+        loop(root)
+        return self.smallest
+
+
+    '''
+
+    - binary tree, the left will always be the smallest, followed by the root,
+    then the right
+
+
+    '''
+
+    # Unique Binary Search Trees
+    def numTrees(self, n: int) -> int:
+        
+        nums = [1] * (n + 1)
+        
+        for i in range(2, n + 1):
+            
+            total = 0
+            
+            for i2 in range(1, i + 1):
+                
+                l = i2 - 1
+                r = i - i2
+                
+                total += nums[l] * nums[r]
+            
+            nums[i] = total
+        
+        return nums[n]
+
+
+    '''
+    
+    Example
+
+    - If n = 3, make a list with [1] * (n + 1), so list = [1,1,1,1]
+    - first for loop goes from 2 to n + 1, so 2, 3 (if n = 3)
+    - set a total = 0
+    - second for loop goes from 1 to i + 1
+    - left is second for loop index minus 1
+    - right is first for loop index minus second for loop index
+    - total += the left times right
+
+    n = 3
+
+    1           1           1
+     
+    = 1 * 2    = 1 * 1     = 2 * 1
+    = 2        = 1         = 2
+
+    total = 2 + 1 + 2
+    = 5
+
+    '''
+
+    # Binary Tree Tilt
+    def findTilt(self, root: Optional[TreeNode]) -> int:
+        
+        self.tilt = 0
+        
+        def loop(root):
+            if not root:
+                return 0
+            
+            
+            l = loop(root.left)
+            r = loop(root.right)
+            
+            self.tilt += abs(l - r)
+            
+            return root.val + l + r
+        
+        loop(root)
+        return self.tilt
+    
+    
+    '''
+    
+    - loop left and loop right
+    - add the abs of left minus right to tilt
+    - return root.val + left + right
+    
+    
+    '''
+
+
+    # Binary Tree Zigzag Level Order Traversal
+    def zigzagLevelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
+            
+        if not root:
+            return []
+        
+        res = []
+        queue = [root]
+        direction = 1
+        while len(queue) > 0:
+            
+            level = []
+            qLength = len(queue)
+
+            for i in range(qLength):
+                
+            
+                level.append(queue[0].val)
+                
+                popped = queue.pop(0)
+                
+                if popped.left: 
+                    queue.append(popped.left)
+                if popped.right:
+                    queue.append(popped.right)
+                        
+
+            if level:
+                if direction % 2 == 0:
+                    
+                    for i in range(len(level) // 2):
+                        
+                        temp = level[len(level) - 1 - i]
+                        level[len(level) - 1 - i] = level[i]
+                        level[i] = temp
+                
+                res.append(level)
+
+            direction += 1
+        
+        return res
+
+
+    '''
+    - same as level order search but now on every other level, we
+    flip the list so that its backwars. Ex: [1,2,3] becomes [3,2,1]
+
+    '''
+
+
+    # Binary Tree Right Side View
+    def rightSideView(self, root: Optional[TreeNode]) -> List[int]:
+        
+            
+        if not root:
+            return
+        
+        queue = [root]
+        res = []
+        
+        while len(queue) > 0:
+            
+            qLength = len(queue)
+
+            for i in range(qLength):
+                
+                if i == 0:
+                    res.append(queue[0].val)
+            
+                popped = queue.pop(0)
+                
+                if popped.right:
+
+                    queue.append(popped.right)
+
+                if popped.left:
+
+                    queue.append(popped.left)
+
+        return res
+
+    '''
+    
+    - same as level search, but when i == 0, append the queue[0] value to res
+    because that is the rightmost value.
+
+    Example:
+
+        [3]
+        / \
+      [2] [4]
+      /
+    [1]
+        
+    - check right first and append to queue if found, then left
+    - it will only append the first value to (res) so that will
+    - either be the right most of the left one if the right one
+    - doesn't exist
+
+    '''
+
+
+    # Add One Row to Tree
+    def addOneRow(self, root: Optional[TreeNode], val: int, depth: int) -> Optional[TreeNode]:
+        
+        def loop(root, level):
+            
+            if not root:
+                return
+            
+            if level + 1 == depth:
+                
+                l = root.left
+                
+                root.left = TreeNode(val)
+                
+                root.left.left = l
+                
+                r = root.right
+                root.right = TreeNode(val)
+                root.right.right = r
+                
+                return
+            
+            if level + 1 < depth:
+                
+                loop(root.left, level + 1)
+                loop(root.right, level + 1)
+        
+        if depth == 1:
+            
+            r = TreeNode(val)
+            r.left = root
+            return r
+        
+        else:
+            loop(root, 1)
+            return root
+
+    '''
+
+    - get the level of the node, (level + 1) every time you loop
+    - if level + 1 is equal to the depth, that means that the 
+    left and right of the current node should be equal to val
+    - set variables (l) and (r) to equal the original left and right
+    of the node and make the new left and right equal to TreeNode(val).
+    - then set the left and right of those new nodes to equal the original
+    left and right trees.
+
+    '''
+
+
+    def maxPathSum(self, root: Optional[TreeNode]) -> int:
+        
+        self.max = float('-inf')
+        
+        def loop(root):
+            
+            if not root:
+                return
+            
+            loop(root.left)
+            loop(root.right)
+            
+            self.max = max(self.max, root.val)
+            
+            if root.left or root.right:
+                
+                getMax(root)
+        
+            
+        
+        def getMax(root):
+            
+            curMax = root.val
+            total = root.val
+            
+            if root.left:
+                
+                curMax = max(curMax, root.left.val + root.val)
+                total += root.left.val
+            
+            if root.right:
+                
+                curMax = max(curMax, root.right.val + root.val)
+                total += root.right.val
+            
+            root.val = curMax
+            largest = max(curMax, total)
+            self.max = max(self.max, largest)
+        
+        loop(root)
+        return self.max
+        
+        
+        '''
+        
+        Tree
+        
+          (1)
+         /   \
+        (2)  (3)
+               \
+               (-5)
+        
+        - loop through the tree (postorder tranversal)
+        - if the node has a leaf, check to see for largest
+            - node (3) has a leaf (-5), so we check the total (-5 + 3) = -2
+            - set root.val to the biggest, either itself, left side + root.val, or
+            right side + root.val
+            - check if the subtree is the biggest (compare to self.max)
+            
+        
+        '''
+
+
+    def goodNodes(self, root: TreeNode) -> int:
+        
+        self.rootNode = root.val
+        self.res = 0
+        
+        def loop(root, nodeVal):
+            if not root:
+                return
+            
+            if root.val >= nodeVal:
+                
+                self.res += 1
+            
+                
+            loop(root.left, max(nodeVal, root.val))
+            loop(root.right, max(nodeVal, root.val))
+        
+        loop(root, root.val)
+        return self.res
+
+
+    '''
+    
+    Tree
+
+          (1)
+         /   \
+        (2)  (3)
+               \
+               (-5)
+    
+    - loop through tree (preorder tranversal)
+    - if root value is greater than or equal to the biggest in path, self.res += 1
+    - when looping compare the max of the current biggest and root value.
+
+    Example Loop
+
+    Tree
+
+          (1)
+          /
+        (2)
+        /
+      (3)
+      /
+    (1)
+    
+    self.res = 1 (b/c (1) is always a good node)
+
+    - (2) is greater than 1 so loop(left, 2), self.res = 2
+    - (3) is greater than 2 so loop(left, 3), self.res = 3
+    - (1) is less than 3 and theres nothing after so do nothing
+
+
+    '''
+
+
+    class Codec:
+
+    def serialize(self, root):
+        
+        self.res = []
+        
+        def loop(root):
+            if not root:
+                self.res.append("n")
+                return
+            
+            self.res.append(str(root.val))
+            
+            loop(root.left)
+            loop(root.right)
+        
+        loop(root)
+        
+        return ",".join(self.res)
+    
+    '''
+    
+    - preorder tranversal
+    - append to array, return with a join split with comma
+    
+    
+    '''
+
+    def deserialize(self, data):
+
+        vals = data.split(",")
+        self.i = 0
+        
+        
+        def loop():
+
+            if vals[self.i] == "n":
+                self.i += 1
+                return None 
+            
+            node = TreeNode(int(vals[self.i]))
+            self.i += 1
+            node.left = loop()
+            node.right = loop()
+            
+            return node
+    
+        return loop()
+    
+    '''
+    - loop through the data [1,n,n,2]
+    - have a self.i which will be your iterator
+    - check if the val[i] = n, return None
+    - set a node to be a TreeNode with the val[i]
+    - set left to loop
+    - set right to loop
+    - iterate self.i by one every time you are looping
+    - return node
+    
     '''
